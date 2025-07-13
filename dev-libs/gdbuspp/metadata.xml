@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>q@cono.org.ua</email>
+  </maintainer>
+  <longdescription>
+    GDBus++ is a C++ wrapper library for the GLib-based D-Bus implementation.
+    It provides a modern C++17 interface for implementing D-Bus services and
+    clients, making it easier to integrate D-Bus functionality into C++ applications.
+    The library is used by OpenVPN 3 Linux and other projects that need
+    efficient D-Bus communication.
+  </longdescription>
+  <use>
+    <flag name="debug">Enable debug mode compilation</flag>
+    <flag name="doxygen">Build API documentation with Doxygen</flag>
+  </use>
+  <upstream>
+    <remote-id type="github">OpenVPN/gdbuspp</remote-id>
+  </upstream>
+</pkgmetadata>

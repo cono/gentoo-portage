@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>q@cono.org.ua</email>
+  </maintainer>
+  <longdescription>
+    OpenVPN 3 Linux is a next-generation OpenVPN client implementation built on
+    OpenVPN 3 Core library. It provides full configuration and session management
+    with improved security through privilege separation and execution models.
+    Unlike OpenVPN 2.x, it allows unprivileged users to start their own VPN sessions
+    and includes built-in network configuration management with DNS resolver support.
+    The architecture is based on D-Bus services providing robust inter-process
+    communication.
+  </longdescription>
+  <use>
+    <flag name="bash-completion">Install bash command completion</flag>
+    <flag name="dco">Enable support for kernel data channel offload</flag>
+    <flag name="man">Build and install manual pages</flag>
+    <flag name="selinux">Install SELinux policy modules</flag>
+  </use>
+  <upstream>
+    <remote-id type="github">OpenVPN/openvpn3-linux</remote-id>
+  </upstream>
+</pkgmetadata>
