@@ -73,7 +73,6 @@ src_configure() {
 		$(meson_feature test unit_tests)
 		-Dwerror=false
 		-Dasio_path=/usr
-		-Dopenvpn3_core_path="${S}/openvpn3-core"
 		--prefix=/usr
 		--sysconfdir=/etc
 		--localstatedir=/var
