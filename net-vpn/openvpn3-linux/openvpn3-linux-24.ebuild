@@ -72,7 +72,7 @@ src_configure() {
 		$(meson_feature dco)
 		$(meson_feature test unit_tests)
 		-Dwerror=false
-		-Dasio_path=/usr/include
+		-Dasio_path=/usr
 		--prefix=/usr
 		--sysconfdir=/etc
 		--localstatedir=/var
