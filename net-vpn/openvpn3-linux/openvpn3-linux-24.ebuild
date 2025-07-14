@@ -68,9 +68,6 @@ pkg_setup() {
 src_prepare() {
 	default
 
-	# Apply patch to fix DNS address string compilation error
-	# eapply "${FILESDIR}/${P}-fix-dns-address-string.patch"
-
 	# Ensure build-version.h is available in src/ directory
 	# The meson build system expects this for tarball builds
 	if [[ ! -f src/build-version.h ]]; then
@@ -125,7 +122,7 @@ src_install() {
 
 	# Install documentation
 	dodoc README.md QUICK-START.md
-	
+
 	if use man; then
 		dodoc docs/man/*.rst
 	fi
@@ -133,17 +130,6 @@ src_install() {
 	# Create necessary directories
 	keepdir /etc/openvpn3
 	keepdir /var/lib/openvpn3
-
-	# Install D-Bus policy files
-	# Note: D-Bus policy files are installed automatically by meson
-	# insinto /usr/share/dbus-1/system.d
-	# doins src/policy/*.conf
-
-	# Install systemd service files if systemd is enabled
-	# Note: systemd service files are installed automatically by meson
-	# if use systemd; then
-	# 	systemd_dounit distro/systemd/*.service
-	# fi
 
 	# Set proper permissions
 	fowners openvpn:openvpn /var/lib/openvpn3
