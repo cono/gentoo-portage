@@ -77,6 +77,7 @@ src_prepare() {
 		#define OPENVPN3_LINUX_BUILD_VERSION_H
 		#define PACKAGE_VERSION "${PV}"
 		#define PACKAGE_NAME "OpenVPN3/Linux"
+		#define PACKAGE_GUIVERSION "${PV}"
 		#define OPENVPN3_LINUX_VERSION "${PV}"
 		#endif
 		EOF
