@@ -68,6 +68,9 @@ pkg_setup() {
 src_prepare() {
 	default
 	
+	# Apply patch to fix DNS address string compilation error
+	eapply "${FILESDIR}/${P}-fix-dns-address-string.patch"
+	
 	# Ensure build-version.h is available in src/ directory
 	# The meson build system expects this for tarball builds
 	if [[ ! -f src/build-version.h ]]; then

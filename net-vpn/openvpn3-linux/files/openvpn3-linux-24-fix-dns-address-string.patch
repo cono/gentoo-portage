@@ -1,0 +1,11 @@
+--- a/src/netcfg/proxy-netcfg-device.cpp
++++ b/src/netcfg/proxy-netcfg-device.cpp
+@@ -206,7 +206,7 @@ bool NetCfgProxy::Device::AddDnsOptions(LogSender::Ptr logsender,
+         {
+             for (const auto &dns_addr : dnsopts.addresses)
+             {
+-                std::string addr = dns_addr.address.to_string();
++                std::string addr = dns_addr.address;
+                 if (dns_addr.port > 0)
+                 {
+                     logsender->LogWarn("DNS port configuration not supported on " + GetDeviceName() + ", ignoring");
