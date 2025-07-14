@@ -140,9 +140,10 @@ src_install() {
 	# doins src/policy/*.conf
 
 	# Install systemd service files if systemd is enabled
-	if use systemd; then
-		systemd_dounit distro/systemd/*.service
-	fi
+	# Note: systemd service files are installed automatically by meson
+	# if use systemd; then
+	# 	systemd_dounit distro/systemd/*.service
+	# fi
 
 	# Set proper permissions
 	fowners openvpn:openvpn /var/lib/openvpn3
