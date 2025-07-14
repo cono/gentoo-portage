@@ -33,6 +33,7 @@ RDEPEND="
 	dev-libs/gdbuspp:=
 	dev-libs/glib:2
 	dev-libs/jsoncpp:=
+	dev-libs/openvpn3-core:=
 	dev-libs/openssl:=
 	dev-libs/tinyxml2:=
 	dev-libs/libnl:3
@@ -91,6 +92,7 @@ src_configure() {
 		$(meson_feature test unit_tests)
 		-Dwerror=false
 		-Dasio_path=/usr
+		-Dopenvpn3_core_path=/usr/include
 		--prefix=/usr
 		--sysconfdir=/etc
 		--localstatedir=/var

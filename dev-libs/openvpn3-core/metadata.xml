@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>q@cono.org.ua</email>
+  </maintainer>
+  <longdescription>
+    OpenVPN 3 Core is a C++ library providing the core OpenVPN protocol 
+    implementation. It is used by OpenVPN 3 Linux client and other OpenVPN 3
+    based applications. The library provides a modern C++17 implementation
+    of the OpenVPN protocol with improved security and performance.
+  </longdescription>
+  <upstream>
+    <remote-id type="github">OpenVPN/openvpn3</remote-id>
+  </upstream>
+</pkgmetadata>
