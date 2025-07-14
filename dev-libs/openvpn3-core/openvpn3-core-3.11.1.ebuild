@@ -39,12 +39,20 @@ BDEPEND="
 src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_BUILD_TYPE=Release
+		-DBUILD_TESTING=OFF
+		-DCMAKE_DISABLE_FIND_PACKAGE_Git=ON
 	)
 	cmake_src_configure
 }
 
+src_compile() {
+	# The library is mostly header-only, but we still run cmake to generate
+	# any necessary files and handle dependencies properly
+	cmake_src_compile
+}
+
 src_install() {
-	# Install headers
+	# Install headers manually since this is primarily a header-only library
 	doheader -r openvpn
 
 	# Install documentation
