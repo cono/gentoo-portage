@@ -40,7 +40,6 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_BUILD_TYPE=Release
 		-DBUILD_TESTING=OFF
-		-DCMAKE_DISABLE_FIND_PACKAGE_Git=ON
 	)
 	cmake_src_configure
 }
