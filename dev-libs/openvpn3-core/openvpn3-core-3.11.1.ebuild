@@ -56,9 +56,12 @@ src_install() {
 	
 	# Install client headers
 	doheader -r client
+	
+	# Install test directory (needed by openvpn3-linux)
+	doheader -r test
 
 	# Install documentation
-	dodoc README.md
+	dodoc README.rst
 
 	# Create a pkg-config file for easy discovery
 	cat > "${T}"/openvpn3-core.pc <<-EOF

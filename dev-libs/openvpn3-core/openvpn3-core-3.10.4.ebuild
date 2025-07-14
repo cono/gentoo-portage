@@ -56,6 +56,9 @@ src_install() {
 	
 	# Install client headers
 	doheader -r client
+	
+	# Install test directory (needed by openvpn3-linux)
+	doheader -r test
 
 	# Install documentation
 	dodoc README.rst
