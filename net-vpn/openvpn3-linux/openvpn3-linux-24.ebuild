@@ -29,6 +29,7 @@ REQUIRED_USE="
 RDEPEND="
 	acct-group/openvpn
 	acct-user/openvpn
+	dev-cpp/asio
 	dev-libs/gdbuspp:=
 	dev-libs/glib:2
 	dev-libs/jsoncpp:=
@@ -71,6 +72,7 @@ src_configure() {
 		$(meson_feature dco)
 		$(meson_feature test unit_tests)
 		-Dwerror=false
+		-Dasio_path=/usr/include
 		--prefix=/usr
 		--sysconfdir=/etc
 		--localstatedir=/var
