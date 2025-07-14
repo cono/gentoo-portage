@@ -4,45 +4,116 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a fresh repository named `gentoo-portage`, which appears to be intended for Gentoo Portage-related development. The repository is currently empty with no commits or files.
+This is a Gentoo Portage overlay containing ebuilds for OpenVPN 3 Linux and related packages. The repository provides packages that are not yet in the main Gentoo tree or newer versions of existing packages.
 
-## Development Setup
+## Package Structure
 
-Since this repository is empty, the initial setup will depend on the intended purpose:
+The overlay contains the following packages:
 
-- **Portage Overlay**: If creating a Gentoo Portage overlay, the typical structure would include category directories with ebuild files
-- **Portage Tooling**: If developing tools for Portage, common languages include Python (Portage is Python-based), Shell scripts, or other system languages
-- **Documentation**: If creating documentation for Portage workflows or packages
+### dev-libs/gdbuspp
+- **Current version**: 3.ebuild
+- **Description**: GDBus++ - C++ wrapper for GLib's GDBus functionality
+- **Purpose**: Dependency for OpenVPN 3 Linux
 
-## Common Gentoo/Portage Conventions
+### dev-libs/openvpn3-core
+- **Current versions**: 3.10.4.ebuild, 3.11.1.ebuild
+- **Description**: OpenVPN 3 Core Library - C++ library for OpenVPN 3 client
+- **Purpose**: Core library used by OpenVPN 3 Linux
+- **Note**: Version 3.10.4 is specifically for compatibility with openvpn3-linux v24
 
-When working with Gentoo Portage projects:
+### net-vpn/openvpn3-linux
+- **Current version**: 24.ebuild
+- **Description**: OpenVPN 3 Linux - Next generation OpenVPN client
+- **Dependencies**: Specifically depends on openvpn3-core-3.10.4 for compatibility
+- **Features**: D-Bus based architecture, systemd integration, modern C++ implementation
 
-- Ebuild files follow strict naming conventions: `package-version.ebuild`
-- Category directories organize packages by type (e.g., `dev-python/`, `sys-apps/`, `net-misc/`)
-- Manifest files are generated automatically via `repoman manifest` or `pkgdev manifest`
-- Metadata.xml files describe package information and maintainers
+## Recent Changes and Fixes
 
-## Future Development Commands
+### OpenVPN 3 Core Library (3.10.4)
+- **Created**: openvpn3-core-3.10.4.ebuild for compatibility with openvpn3-linux v24
+- **Fixed**: Documentation file reference from README.md to README.rst
+- **Added**: Installation of test directory (needed for openvpn3-linux build)
+- **Fixed**: Both 3.10.4 and 3.11.1 ebuilds updated with same fixes
 
-Once the project structure is established, common commands may include:
+### OpenVPN 3 Linux (v24)
+- **Fixed**: Dependency constraint to use specific openvpn3-core-3.10.4 version instead of latest
+- **Fixed**: Removed manual D-Bus policy file installation (handled by meson automatically)
+- **Fixed**: Removed manual systemd service file installation (handled by meson automatically)
+- **Removed**: Commented out problematic patch application
+- **Simplified**: Installation process relies on meson's automatic file handling
+
+## Development Workflow
+
+### Testing Packages
+```bash
+# Test individual packages
+ebuild package-version.ebuild clean unpack
+ebuild package-version.ebuild manifest
+emerge -pv package-name
+
+# Test dependencies
+emerge -pvt openvpn3-linux
+```
+
+### Making Changes
+```bash
+# After modifying an ebuild
+ebuild package-version.ebuild manifest
+git add package-category/package-name/
+git commit -m "descriptive message"
+git push
+```
+
+### Common Issues and Solutions
+
+1. **Missing files during installation**: Check if meson is already handling the installation automatically
+2. **Dependency version conflicts**: Use specific version constraints (e.g., =dev-libs/openvpn3-core-3.10.4*)
+3. **Build failures**: Ensure all required headers and test files are installed by dependencies
+
+## Package Dependencies
+
+```
+openvpn3-linux-24
+├── =dev-libs/openvpn3-core-3.10.4*  (specific version required)
+├── dev-libs/gdbuspp:=
+├── dev-libs/jsoncpp:=
+├── dev-libs/openssl:=
+├── dev-libs/tinyxml2:=
+├── dev-libs/libnl:3
+├── sys-libs/libcap-ng
+└── sys-apps/systemd (if USE=systemd)
+```
+
+## Build System Notes
+
+- **OpenVPN 3 Core**: Uses CMake, mostly header-only library
+- **OpenVPN 3 Linux**: Uses Meson, automatically handles D-Bus and systemd file installation
+- **GDBuspp**: Uses Meson
+
+## Testing Commands
 
 ```bash
-# For Portage overlays
-repoman scan          # Check ebuild quality
-pkgdev manifest       # Generate/update Manifest files
-emerge --ask package  # Test package installation
+# Build and test individual packages
+emerge -av openvpn3-linux
 
-# For Python-based Portage tools
-python -m pytest     # Run tests (if using pytest)
-python setup.py test  # Run tests (if using setuptools)
-flake8 .             # Python linting
-mypy .               # Python type checking
+# Check dependencies
+equery depends openvpn3-linux
+equery graph openvpn3-linux
+
+# Verify file installation
+equery files openvpn3-linux
 ```
+
+## Future Development
+
+- Monitor upstream releases for new versions
+- Keep 3.11.1 version of openvpn3-core for future openvpn3-linux versions
+- Consider adding USE flags for optional features
+- Monitor for Gentoo mainline inclusion
 
 ## Notes for Future Development
 
-- This repository currently contains no source code or configuration files
-- The development workflow and tooling will depend on the specific purpose of the project
-- Consider adding appropriate configuration files (setup.py, pyproject.toml, Makefile, etc.) based on the chosen technology stack
-- Gentoo projects typically follow Gentoo development standards and GLEP (Gentoo Linux Enhancement Proposals)
+- The overlay follows standard Gentoo development practices
+- All packages have been tested and successfully build
+- Meson build system handles most file installation automatically
+- Version constraints are crucial for compatibility between packages
