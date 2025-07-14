@@ -135,8 +135,9 @@ src_install() {
 	keepdir /var/lib/openvpn3
 
 	# Install D-Bus policy files
-	insinto /usr/share/dbus-1/system.d
-	doins src/policy/*.conf
+	# Note: D-Bus policy files are installed automatically by meson
+	# insinto /usr/share/dbus-1/system.d
+	# doins src/policy/*.conf
 
 	# Install systemd service files if systemd is enabled
 	if use systemd; then
