@@ -33,7 +33,7 @@ RDEPEND="
 	dev-libs/gdbuspp:=
 	dev-libs/glib:2
 	dev-libs/jsoncpp:=
-	dev-libs/openvpn3-core:=
+	=dev-libs/openvpn3-core-3.10.4*
 	dev-libs/openssl:=
 	dev-libs/tinyxml2:=
 	dev-libs/libnl:3
@@ -67,10 +67,10 @@ pkg_setup() {
 
 src_prepare() {
 	default
-	
+
 	# Apply patch to fix DNS address string compilation error
-	eapply "${FILESDIR}/${P}-fix-dns-address-string.patch"
-	
+	# eapply "${FILESDIR}/${P}-fix-dns-address-string.patch"
+
 	# Ensure build-version.h is available in src/ directory
 	# The meson build system expects this for tarball builds
 	if [[ ! -f src/build-version.h ]]; then
