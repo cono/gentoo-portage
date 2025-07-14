@@ -53,6 +53,9 @@ src_compile() {
 src_install() {
 	# Install headers manually since this is primarily a header-only library
 	doheader -r openvpn
+	
+	# Install client headers
+	doheader -r client
 
 	# Install documentation
 	dodoc README.md
