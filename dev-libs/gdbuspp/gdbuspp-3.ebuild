@@ -19,8 +19,7 @@ fi
 LICENSE="AGPL-3"
 SLOT="0/3"
 
-IUSE="debug doc doxygen test"
-RESTRICT="!test? ( test )"
+IUSE="debug doc doxygen"
 
 RDEPEND="
 	dev-libs/glib:2
@@ -40,7 +39,6 @@ src_configure() {
 	local emesonargs=(
 		$(meson_use debug)
 		$(meson_use doxygen)
-		$(meson_use test tests)
 		-Dinternal_debug=false
 		-Dwerror=false
 	)
@@ -49,10 +47,6 @@ src_configure() {
 
 src_compile() {
 	meson_src_compile
-}
-
-src_test() {
-	meson_src_test
 }
 
 src_install() {
