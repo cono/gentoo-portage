@@ -58,7 +58,7 @@ src_install() {
 	doheader -r client
 
 	# Install documentation
-	dodoc README.md
+	dodoc README.rst
 
 	# Create a pkg-config file for easy discovery
 	cat > "${T}"/openvpn3-core.pc <<-EOF
