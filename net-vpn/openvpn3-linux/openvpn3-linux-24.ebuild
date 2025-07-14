@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit meson systemd
+inherit meson systemd toolchain-funcs
 
 DESCRIPTION="OpenVPN 3 Linux - Next generation OpenVPN client"
 HOMEPAGE="https://github.com/OpenVPN/openvpn3-linux"
@@ -65,11 +65,11 @@ pkg_setup() {
 
 src_configure() {
 	local emesonargs=(
-		$(meson_use bash-completion bash_completion)
-		$(meson_use man man_pages)
-		$(meson_use selinux)
-		$(meson_use systemd)
-		$(meson_use test unit_tests)
+		$(meson_feature bash-completion)
+		$(meson_feature man generate-man)
+		$(meson_feature selinux)
+		$(meson_feature dco)
+		$(meson_feature test unit_tests)
 		-Dwerror=false
 		--prefix=/usr
 		--sysconfdir=/etc
