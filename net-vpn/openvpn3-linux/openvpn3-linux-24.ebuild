@@ -64,6 +64,24 @@ pkg_setup() {
 	fi
 }
 
+src_prepare() {
+	default
+	
+	# Ensure build-version.h is available in src/ directory
+	# The meson build system expects this for tarball builds
+	if [[ ! -f src/build-version.h ]]; then
+		einfo "Creating minimal build-version.h file"
+		cat > src/build-version.h <<-EOF
+		#ifndef OPENVPN3_LINUX_BUILD_VERSION_H
+		#define OPENVPN3_LINUX_BUILD_VERSION_H
+		#define PACKAGE_VERSION "${PV}"
+		#define PACKAGE_NAME "OpenVPN3/Linux"
+		#define OPENVPN3_LINUX_VERSION "${PV}"
+		#endif
+		EOF
+	fi
+}
+
 src_configure() {
 	local emesonargs=(
 		$(meson_feature bash-completion)
