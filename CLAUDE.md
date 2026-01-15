@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a Gentoo Portage overlay containing ebuilds for OpenVPN 3 Linux and related packages. The repository provides packages that are not yet in the main Gentoo tree or newer versions of existing packages.
+This is a Gentoo Portage overlay containing custom ebuilds for packages not yet in the main Gentoo tree or with modifications. Current packages include OpenVPN 3 Linux stack and KeePassXC password manager.
 
 ## Package Structure
 
@@ -27,7 +27,21 @@ The overlay contains the following packages:
 - **Dependencies**: Specifically depends on openvpn3-core-3.10.4 for compatibility
 - **Features**: D-Bus based architecture, systemd integration, modern C++ implementation
 
+### app-admin/keepassxc
+- **Current version**: 2.7.10-r2.ebuild
+- **Description**: KeePassXC - KeePass Cross-platform Community Edition password manager
+- **Build system**: CMake
+- **USE flags**: X, autotype, browser, doc, keeshare, keyring (default), network (default), ssh-agent (default), test, yubikey
+- **Why 2.7.10**: Version 2.7.11 has an Auto-Type regression bug (https://github.com/keepassxreboot/keepassxc/issues/12723)
+- **Note**: Ebuild and patches imported from Gentoo main tree with unbundled zxcvbn
+
 ## Recent Changes and Fixes
+
+### KeePassXC (2.7.10-r2)
+- **Added**: New package app-admin/keepassxc-2.7.10-r2
+- **Reason**: Version 2.7.11 has Auto-Type regression (upstream issue #12723)
+- **Patches**: cmake_minimum, tests, zxcvbn patches from Gentoo main tree
+- **Feature**: Unbundled zxcvbn library for better security
 
 ### OpenVPN 3 Core Library (3.10.4)
 - **Created**: openvpn3-core-3.10.4.ebuild for compatibility with openvpn3-linux v24
@@ -89,6 +103,7 @@ openvpn3-linux-24
 - **OpenVPN 3 Core**: Uses CMake, mostly header-only library
 - **OpenVPN 3 Linux**: Uses Meson, automatically handles D-Bus and systemd file installation
 - **GDBuspp**: Uses Meson
+- **KeePassXC**: Uses CMake, Qt5-based application
 
 ## Testing Commands
 

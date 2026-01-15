@@ -19,9 +19,9 @@ A modern C++17 wrapper library for the GLib-based D-Bus implementation, providin
 
 ### net-vpn/openvpn3-linux
 
-**Version**: 24  
-**Description**: OpenVPN 3 Linux - Next generation OpenVPN client  
-**Homepage**: https://github.com/OpenVPN/openvpn3-linux  
+**Version**: 24
+**Description**: OpenVPN 3 Linux - Next generation OpenVPN client
+**Homepage**: https://github.com/OpenVPN/openvpn3-linux
 
 Next-generation OpenVPN client implementation built on OpenVPN 3 Core library with improved security through privilege separation and D-Bus architecture.
 
@@ -34,6 +34,26 @@ Next-generation OpenVPN client implementation built on OpenVPN 3 Core library wi
 - `test` - Build and run tests
 
 **Dependencies**: Requires `dev-libs/gdbuspp` (provided by this overlay)
+
+### app-admin/keepassxc
+
+**Version**: 2.7.10-r2
+**Description**: KeePassXC - KeePass Cross-platform Community Edition
+**Homepage**: https://keepassxc.org
+
+Cross-platform password manager that is community-driven and compatible with KeePass databases. This overlay provides version 2.7.10 because version 2.7.11 has an [Auto-Type regression bug](https://github.com/keepassxreboot/keepassxc/issues/12723).
+
+**USE flags**:
+- `X` - Enable X11 support
+- `autotype` - Enable Auto-Type feature (requires X)
+- `browser` - Enable browser integration and passkeys
+- `doc` - Build documentation with asciidoctor
+- `keeshare` - Enable KeeShare database sharing
+- `keyring` - Enable freedesktop.org Secret Service integration (default)
+- `network` - Enable network features (default)
+- `ssh-agent` - Enable SSH agent integration (default)
+- `test` - Build and run tests
+- `yubikey` - Enable YubiKey hardware key support
 
 ## Installation
 
@@ -96,5 +116,6 @@ This overlay is maintained by q@cono.org.ua. Issues and suggestions are welcome 
 Individual packages retain their original licenses:
 - gdbuspp: AGPL-3.0
 - openvpn3-linux: AGPL-3.0
+- keepassxc: GPL-2/GPL-3 (dual licensed)
 
 This overlay itself is provided under the GPL-2 license, consistent with Gentoo Portage.
