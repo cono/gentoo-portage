@@ -620,6 +620,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+kitty +sixel"
 
+PATCHES=(
+	"${FILESDIR}/${P}-mermaid-fonts.patch"
+)
+
 DOCS=(
 	README.md
 	DESIGN.md

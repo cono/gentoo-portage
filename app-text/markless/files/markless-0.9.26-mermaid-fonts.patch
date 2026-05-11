@@ -1,0 +1,23 @@
+From: cono <q@cono.org.ua>
+Subject: [PATCH] mermaid: use universally-available Linux fonts
+
+usvg's fontdb does literal font-name matching and does not honor
+fontconfig aliases, so the upstream default of "Helvetica, Arial,
+sans-serif" produces a "no match for font-family" warning and an
+ugly fallback on systems without media-fonts/corefonts. Use the
+fonts shipped by most desktop installs (media-fonts/dejavu and
+media-fonts/liberation-fonts) instead. The "sans-serif" generic
+is kept as a final fallback so the assertion in the existing test
+that "the SVG should not require Inter" still holds.
+
+--- a/src/mermaid.rs
++++ b/src/mermaid.rs
+@@ -18,7 +18,7 @@
+ /// Returns an error if the mermaid source cannot be parsed.
+ pub fn render_to_svg(mermaid_source: &str) -> Result<String> {
+     let mut opts = mermaid_rs_renderer::RenderOptions::default();
+-    opts.theme.font_family = "Helvetica, Arial, sans-serif".to_string();
++    opts.theme.font_family = "DejaVu Sans, Liberation Sans, sans-serif".to_string();
+     let svg = catch_unwind(AssertUnwindSafe(|| {
+         mermaid_rs_renderer::render_with_options(mermaid_source, opts)
+     }))
