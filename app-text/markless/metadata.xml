@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		Markless is a terminal markdown viewer and editor with image
+		support. It supports inline images (Kitty, Sixel, iTerm2, and
+		half-block fallback), Mermaid diagrams, LaTeX math via Typst,
+		CSV tables, syntax-highlighted code blocks, search, file
+		watching, and a directory browse mode.
+	</longdescription>
+	<use>
+		<flag name="kitty">Enable Kitty graphics protocol image support</flag>
+		<flag name="sixel">Enable Sixel image protocol support</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">jvanderberg/markless</remote-id>
+	</upstream>
+</pkgmetadata>
