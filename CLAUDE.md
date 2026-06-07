@@ -59,6 +59,13 @@ The overlay contains the following packages:
 
 ## Development Workflow
 
+### Overlay Layout and Manifests (IMPORTANT)
+
+- This git working directory **is** a valid Portage overlay (it has `metadata/layout.conf` with `repo-name = cono`). It is owned by `cono`, so run `ebuild` commands **here**, not elsewhere.
+- **Generate manifests in the working directory:** `cd <category>/<package>/ && ebuild <package>-<version>.ebuild manifest`. This works as the `cono` user without root because the directory is writable and the overlay is auto-detected (appended to `PORTDIR_OVERLAY`).
+- **Do NOT touch `/var/db/repos/cono` (or anything under `/var/db`).** That is a separate, root-owned clone that Portage syncs from GitHub via `emaint sync -r cono`. Writing there requires `sudo` (which prompts for a password in non-interactive shells and will fail). The correct flow is: edit + `ebuild manifest` + commit + push **here**, then the user syncs and tests against `/var/db/repos/cono`.
+- This overlay uses **thick manifests** (unlike the gentoo tree's thin manifests): the `Manifest` must contain `EBUILD` and `MISC` (metadata.xml) digest lines in addition to `DIST`. `ebuild ... manifest` generates all of these correctly — always use it rather than hand-editing the Manifest.
+
 ### Testing Packages
 ```bash
 # Test individual packages
