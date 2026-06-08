@@ -1,0 +1,53 @@
+diff --git a/src/autotype/AutoType.cpp b/src/autotype/AutoType.cpp
+index b6f1428b..a7fcf344 100644
+--- a/src/autotype/AutoType.cpp
++++ b/src/autotype/AutoType.cpp
+@@ -239,7 +239,7 @@ void AutoType::raiseWindow()
+ {
+ #if defined(Q_OS_MACOS)
+     if (m_plugin) {
+-        m_plugin->raiseOwnWindow();
++        m_platform->raiseOwnWindow();
+     }
+ #endif
+ }
+@@ -303,7 +303,7 @@ void AutoType::executeAutoTypeActions(const Entry* entry,
+         }
+ 
+         macUtils()->raiseLastActiveWindow();
+-        m_plugin->hideOwnWindow();
++        m_platform->hideOwnWindow();
+ #else
+         if (getMainWindow()) {
+             getMainWindow()->minimizeOrHide();
+@@ -504,7 +504,7 @@ void AutoType::performGlobalAutoType(const QList<QSharedPointer<Database>>& dbLi
+         });
+ 
+ #ifdef Q_OS_MACOS
+-        m_plugin->raiseOwnWindow();
++        m_platform->raiseOwnWindow();
+         Tools::wait(50);
+ #endif
+         selectDialog->show();
+diff --git a/src/autotype/AutoTypeSelectDialog.cpp b/src/autotype/AutoTypeSelectDialog.cpp
+index 631c73af..3181a1a7 100644
+--- a/src/autotype/AutoTypeSelectDialog.cpp
++++ b/src/autotype/AutoTypeSelectDialog.cpp
+@@ -71,7 +71,6 @@ AutoTypeSelectDialog::AutoTypeSelectDialog(QWidget* parent)
+     m_searchTimer.setSingleShot(true);
+ 
+     connect(m_ui->search, SIGNAL(textChanged(QString)), &m_searchTimer, SLOT(start()));
+-    connect(m_ui->search, SIGNAL(returnPressed()), SLOT(activateCurrentMatch()));
+     connect(&m_searchTimer, SIGNAL(timeout()), SLOT(performSearch()));
+ 
+     m_ui->searchCheckBox->setShortcut(Qt::CTRL + Qt::Key_F);
+@@ -245,6 +244,9 @@ bool AutoTypeSelectDialog::eventFilter(QObject* obj, QEvent* event)
+                     m_ui->search->clear();
+                 }
+                 return true;
++			case Qt::Key_Return:
++				activateCurrentMatch();
++				return true;
+             default:
+                 break;
+             }
