@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>cono@chartbeat.com</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		LocalSend is a free, open-source app that allows you to securely share
+		files and messages with nearby devices over your local network without
+		needing an internet connection. It works as a cross-platform
+		alternative to AirDrop.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">localsend/localsend</remote-id>
+	</upstream>
+</pkgmetadata>
