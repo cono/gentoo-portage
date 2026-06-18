@@ -230,8 +230,9 @@ src_prepare() {
 	eapply "${WORKDIR}"/firefox-patches
 	eapply "${WORKDIR}"/spidermonkey-patches
 
-	# Python 3.14 compat: ast.Constant.s/.n aliases were removed in 3.14
-	eapply "${FILESDIR}"/spidermonkey-128-python3.14-ast-constant.patch
+	# Python 3.14 compat: ast.Str/ast.Num and the ast.Constant.s/.n aliases
+	# were removed in 3.14
+	eapply "${FILESDIR}"/spidermonkey-128-python3.14-ast.patch
 
 	default
 

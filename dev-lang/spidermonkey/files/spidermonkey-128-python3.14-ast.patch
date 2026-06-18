@@ -1,0 +1,45 @@
+Python 3.14 compatibility for mach / mozbuild AST helpers.
+
+Python 3.14 finished removing the long-deprecated ast.Str / ast.Num
+classes and the ast.Constant.s / ast.Constant.n aliases. The mach command
+scanner and the mozbuild frontend reader still used the old API, so
+`mach configure` aborted with:
+
+    AttributeError: 'Constant' object has no attribute 's'
+    AttributeError: module 'ast' has no attribute 'Str'
+
+Read/construct constants via .value / ast.Constant instead. ast.Index is
+still present in 3.14 (a deprecated passthrough), so it is left as-is to
+keep the change minimal.
+
+Not upstreamed; specific to building spidermonkey-128 under Python 3.14.
+--- a/python/mach/mach/command_util.py
++++ b/python/mach/mach/command_util.py
+@@ -289,14 +289,14 @@
+             kwarg_dict = {}
+
+             for name, arg in zip(["command", "subcommand"], decorator.args):
+-                kwarg_dict[name] = arg.s
++                kwarg_dict[name] = arg.value
+
+             for keyword in decorator.keywords:
+                 if keyword.arg not in relevant_kwargs:
+                     # We only care about these 3 kwargs, so we can safely skip the rest
+                     continue
+
+-                kwarg_dict[keyword.arg] = getattr(keyword.value, "s", "")
++                kwarg_dict[keyword.arg] = getattr(keyword.value, "value", "")
+
+             command = kwarg_dict.pop("command")
+             self.results.setdefault(command, {})
+--- a/python/mozbuild/mozbuild/frontend/reader.py
++++ b/python/mozbuild/mozbuild/frontend/reader.py
+@@ -470,7 +470,7 @@
+             return c(
+                 ast.Subscript(
+                     value=c(ast.Name(id=self._global_name, ctx=ast.Load())),
+-                    slice=c(ast.Index(value=c(ast.Str(s=node.id)))),
++                    slice=c(ast.Index(value=c(ast.Constant(value=node.id)))),
+                     ctx=node.ctx,
+                 )
+             )
