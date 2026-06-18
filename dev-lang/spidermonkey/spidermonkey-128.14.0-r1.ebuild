@@ -230,6 +230,9 @@ src_prepare() {
 	eapply "${WORKDIR}"/firefox-patches
 	eapply "${WORKDIR}"/spidermonkey-patches
 
+	# Python 3.14 compat: ast.Constant.s/.n aliases were removed in 3.14
+	eapply "${FILESDIR}"/spidermonkey-128-python3.14-ast-constant.patch
+
 	default
 
 	# Make cargo respect MAKEOPTS
