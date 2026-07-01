@@ -5,7 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit python-single-r1 xdg
+inherit gnome2-utils python-single-r1 xdg
 
 # Upstream ships no tagged releases, only a rolling main branch whose version is
 # derived from the commit date. Pin a specific commit and version it by that date.
@@ -75,4 +75,16 @@ src_install() {
 	find "${ED}"/usr/share/man -type f -name '*.gz' -exec gunzip {} + || die
 
 	einstalldocs
+}
+
+pkg_postinst() {
+	xdg_pkg_postinst
+	# Compile the installed GSettings schema; xdg.eclass does not do this and
+	# the app aborts at startup if its schema is not in gschemas.compiled.
+	gnome2_schemas_update
+}
+
+pkg_postrm() {
+	xdg_pkg_postrm
+	gnome2_schemas_update
 }
