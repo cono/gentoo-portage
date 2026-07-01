@@ -3,7 +3,13 @@
 
 EAPI=8
 
-inherit meson systemd toolchain-funcs
+# openvpn3-linux ships a Python "openvpn3" D-Bus binding module. meson installs
+# it into whichever python3 is found on PATH, so pin it to a single Python
+# target: this records a PYTHON_SINGLE_TARGET USE flag and makes the package
+# rebuild on Python upgrades instead of orphaning the module in an old site dir.
+PYTHON_COMPAT=( python3_{11..14} )
+
+inherit meson python-single-r1 systemd toolchain-funcs
 
 DESCRIPTION="OpenVPN 3 Linux - Next generation OpenVPN client"
 HOMEPAGE="https://github.com/OpenVPN/openvpn3-linux"
@@ -23,10 +29,16 @@ IUSE="bash-completion dco man selinux systemd test"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
+	${PYTHON_REQUIRED_USE}
 	systemd? ( || ( systemd ) )
 "
 
 RDEPEND="
+	${PYTHON_DEPS}
+	$(python_gen_cond_dep '
+		dev-python/dbus-python[${PYTHON_USEDEP}]
+		dev-python/pyopenssl[${PYTHON_USEDEP}]
+	')
 	acct-group/openvpn
 	acct-user/openvpn
 	dev-cpp/asio
@@ -85,6 +97,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# Put the selected interpreter first on PATH so meson's
+	# find_installation('python3') resolves to it and installs the openvpn3
+	# module into that target's site-packages.
+	python_setup
+
 	local emesonargs=(
 		$(meson_feature bash-completion)
 		$(meson_feature man generate-man)

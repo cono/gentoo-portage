@@ -35,7 +35,7 @@ RDEPEND="
 	')
 	dev-libs/libayatana-appindicator
 	x11-libs/gtk+:3[introspection]
-	net-vpn/openvpn3-linux
+	net-vpn/openvpn3-linux[${PYTHON_SINGLE_USEDEP}]
 "
 
 DEPEND="${RDEPEND}"
