@@ -82,6 +82,17 @@ pkg_postinst() {
 	# Compile the installed GSettings schema; xdg.eclass does not do this and
 	# the app aborts at startup if its schema is not in gschemas.compiled.
 	gnome2_schemas_update
+
+	elog "openvpn3-indicator needs a StatusNotifierItem (SNI/AppIndicator) tray"
+	elog "host at runtime. Without one it exits with:"
+	elog "  \"OpenVPN Indicator requires AppIndicator to run\""
+	elog
+	elog "  - KDE Plasma provides this out of the box."
+	elog "  - GNOME Shell does not; install and enable the AppIndicator extension:"
+	elog "      emerge gnome-extra/gnome-shell-extension-appindicator"
+	elog "      gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com"
+	elog "    then restart GNOME Shell (or log out and back in)."
+	elog "  - Barebones WMs may need a proxy such as x11-misc/snixembed."
 }
 
 pkg_postrm() {
