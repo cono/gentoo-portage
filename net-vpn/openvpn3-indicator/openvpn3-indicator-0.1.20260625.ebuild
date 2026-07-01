@@ -69,5 +69,10 @@ src_install() {
 		HARDCODE_PYTHON="${PYTHON}" \
 		package
 
+	# The Makefile installs man pages pre-gzipped, but /usr/share/man is a
+	# docompress-ed directory; decompress them so Portage handles compression
+	# itself (avoids the double-compression QA notice).
+	find "${ED}"/usr/share/man -type f -name '*.gz' -exec gunzip {} + || die
+
 	einstalldocs
 }
