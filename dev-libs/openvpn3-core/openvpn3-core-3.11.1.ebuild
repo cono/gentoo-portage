@@ -22,6 +22,12 @@ SLOT="0"
 
 IUSE=""
 
+# The recursively-installed test tree includes OpenVPN's vendored Snappy test
+# corpus, which contains foreign-arch ELF sample files (e.g. comp-testdata/sum,
+# a SPARC binary) used only as compression input and never executed. Whitelist
+# them from the executable-stack QA check.
+QA_EXECSTACK="usr/include/test/unittests/comp-testdata/*"
+
 RDEPEND="
 	dev-cpp/asio
 	dev-libs/openssl:=
