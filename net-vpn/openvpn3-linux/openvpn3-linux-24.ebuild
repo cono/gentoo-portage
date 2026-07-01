@@ -9,7 +9,7 @@ EAPI=8
 # rebuild on Python upgrades instead of orphaning the module in an old site dir.
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit meson python-single-r1 systemd toolchain-funcs
+inherit flag-o-matic meson python-single-r1 systemd toolchain-funcs
 
 DESCRIPTION="OpenVPN 3 Linux - Next generation OpenVPN client"
 HOMEPAGE="https://github.com/OpenVPN/openvpn3-linux"
@@ -97,6 +97,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# GCC 14+ no longer transitively pulls in <cstdint>, so the many uintN_t
+	# uses spread across the tree fail with "uint32_t does not name a type".
+	# Force-include it everywhere instead of patching 60+ source files.
+	append-cxxflags -include cstdint
+
 	# Put the selected interpreter first on PATH so meson's
 	# find_installation('python3') resolves to it and installs the openvpn3
 	# module into that target's site-packages.
