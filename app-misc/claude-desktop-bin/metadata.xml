@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		The official Claude desktop application from Anthropic, repackaged from
+		the upstream Debian binary package. It bundles its own Electron runtime
+		and provides the Chat, Cowork and Claude Code tabs: parallel sessions,
+		visual diff review, an integrated terminal and editor, and live app
+		preview. Linux support is a beta from upstream.
+	</longdescription>
+	<use>
+		<flag name="suid">
+			Install the bundled chrome-sandbox helper setuid root. Only needed
+			on kernels without CONFIG_USER_NS, or where unprivileged user
+			namespaces are blocked by a sysctl or an LSM. Otherwise leave this
+			off: the bundled Chromium uses its namespace sandbox, which needs
+			no elevated privileges at all.
+		</flag>
+	</use>
+</pkgmetadata>
