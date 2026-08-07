@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit desktop linux-info optfeature pax-utils unpacker xdg
+inherit desktop linux-info pax-utils unpacker xdg
 
 MY_PN="${PN%-bin}"
 MY_URI="https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/${MY_PN}"
@@ -104,9 +104,6 @@ src_install() {
 pkg_postinst() {
 	xdg_pkg_postinst
 
-	optfeature "running Cowork agents in an isolated VM" \
-		"app-emulation/qemu app-emulation/virtiofsd sys-firmware/edk2"
-
 	# CONFIG_USER_NS=y is necessary but not sufficient: an LSM or a sysctl can
 	# still block unprivileged CLONE_NEWUSER at runtime, which pkg_setup cannot
 	# see. Chromium then refuses to start rather than run unsandboxed.
@@ -122,6 +119,10 @@ pkg_postinst() {
 		elog "Claude Desktop on Linux is upstream beta. Computer Use and"
 		elog "dictation are not available; the Quick Entry global hotkey needs"
 		elog "X11 or a GlobalShortcuts portal on Wayland."
+		elog
+		elog "Cowork's isolated-VM mode is gated off by upstream on Linux"
+		elog "(\"startVM: VM not supported\"), so installing qemu/virtiofsd/edk2"
+		elog "does not enable it. Cowork otherwise runs against the service."
 		elog
 		elog "MCP servers are configured in ~/.config/Claude/claude_desktop_config.json"
 		elog
