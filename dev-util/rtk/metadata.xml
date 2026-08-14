@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		rtk (Rust Token Killer) is a CLI proxy that sits in front of common
+		commands and compresses their output before it reaches an LLM context.
+		It ships filters for over a hundred tools - git, cargo, docker, npm,
+		pytest, kubectl, the AWS CLI and more - applying smart truncation,
+		grouping and deduplication to cut token usage while keeping the
+		information that matters. Intended for use with AI coding agents.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">rtk-ai/rtk</remote-id>
+	</upstream>
+</pkgmetadata>
