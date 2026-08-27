@@ -550,7 +550,7 @@ LICENSE+="
 	ISC MIT MPL-2.0 Unicode-3.0 ZLIB
 "
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 # Lua 5.5 is not packaged in Gentoo yet, so mlua's vendored copy is used
 # (yazi-fm's default "vendored-lua" feature).

@@ -12,7 +12,7 @@ SRC_URI="https://github.com/artemsen/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${
 # The bundled src/external/{json,luabridge} headers are MIT as well
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 IUSE="avif drm +exif exr +gif heif +jpeg jpeg2k +jpegxl +png raw sixel +svg test +tiff +wayland +webp"
 REQUIRED_USE="|| ( drm wayland )"
 RESTRICT="!test? ( test )"
