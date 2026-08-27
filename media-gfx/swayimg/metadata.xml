@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		Swayimg is a lightweight image viewer for Wayland compositors and DRM
+		consoles. It can show images inside a "overlay" window on Sway, has a
+		thumbnail gallery mode, slideshow, and is fully configurable with Lua
+		scripts.
+	</longdescription>
+	<use>
+		<flag name="drm">Enable DRM (Direct Rendering Manager) console output</flag>
+		<flag name="exif">Read EXIF metadata via <pkg>media-gfx/exiv2</pkg></flag>
+		<flag name="exr">Enable EXR image format support via <pkg>media-libs/openexr</pkg></flag>
+		<flag name="jpeg2k">Enable JPEG 2000 image format support via <pkg>media-libs/openjpeg</pkg></flag>
+		<flag name="raw">Enable raw image format support via <pkg>media-libs/libraw</pkg></flag>
+		<flag name="sixel">Enable Sixel image format support via <pkg>media-libs/libsixel</pkg></flag>
+	</use>
+	<upstream>
+		<bugs-to>https://github.com/artemsen/swayimg/issues</bugs-to>
+		<remote-id type="github">artemsen/swayimg</remote-id>
+	</upstream>
+</pkgmetadata>
