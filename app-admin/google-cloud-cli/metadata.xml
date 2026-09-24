@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		The Google Cloud CLI (formerly Google Cloud SDK) is a set of tools to
+		create and manage Google Cloud resources: gcloud, gsutil and bq.
+		This package installs the upstream release tarball, runs it on the
+		system Python instead of the bundled interpreter, and disables the
+		built-in component manager. Extra components (kubectl, emulators,
+		App Engine runtimes, ...) are not available through
+		"gcloud components"; install them from the tree instead.
+	</longdescription>
+</pkgmetadata>
