@@ -26,7 +26,8 @@ reason to run both.
 
 Useful when a bump needs follow-up work: `--version VER` targets a specific
 release, `--keep-build` leaves the build tree in `/var/tmp/portage` for
-inspection.
+inspection, `--keep N` changes how many ebuilds survive the prune (see
+*Committing*).
 
 The script creates the new ebuild as a copy of the previous version, regenerates
 the Manifest, then diffs the new `.deb` against the previous one along every axis
@@ -35,7 +36,8 @@ the ebuild depends on: upstream's own `Depends`/`Recommends` on both arches, the
 set, the `.desktop` entry, the app tree, the bundled Electron version, and the
 paths `src_install` reaches for (read out of the ebuild's own `fperms`/`domenu`/
 `dodoc` lines, so the checks follow the ebuild if it's ever reworked). Finally it
-runs `ebuild clean install` and inspects the resulting image.
+runs `ebuild clean install`, inspects the resulting image, and prunes the ebuilds
+that have fallen out of the retention window.
 
 It ends with one of four verdicts.
 
@@ -70,11 +72,26 @@ build.
 
 **FAIL** — the bump doesn't work as-is. Report what blocked it and leave the
 tree alone for the user to decide on. The new ebuild and Manifest may already
-be written; say so rather than silently reverting them.
+be written; say so rather than silently reverting them. Pruning runs only after
+a passing build, so a FAIL never costs an older ebuild.
 
 ## Committing
 
-Keep every older ebuild — this overlay deliberately retains them.
+The overlay keeps the **four newest** ebuilds and no more — they're fallbacks,
+not a history, and each retained version pins ~330 MB of DIST entries in the
+Manifest. The script does this itself: after the build passes it `git rm`s
+everything past the fourth, regenerates the Manifest so the stale `DIST` and
+`EBUILD` lines go with them, and reports what it dropped under "pruned". A
+version that is *currently installed* is never dropped, however old — emerge
+needs its ebuild to unmerge or rebuild it — and the report notes when that
+happens.
+
+So don't prune by hand, and don't restore what the script pruned. Just fold its
+list into the commit. If a bump ends up rejected, back all of it out with
+`git checkout HEAD -- app-misc/claude-desktop-bin` — `HEAD` matters, because the
+prune is already staged, and a plain `git checkout --` would restore the Manifest
+while leaving the ebuilds deleted. That leaves only the new, still-untracked
+ebuild to `rm`.
 
 Match the established message style: a subject of
 `app-misc/claude-desktop-bin: add <version>`, then a body that says what was
@@ -93,7 +110,8 @@ from 1.30096.1, so the ebuild is a straight copy.
 The bundled Electron goes 42.7.0 -> 42.9.2, still the same major, so
 the RDEPEND comment about Electron 42 stays accurate.
 
-Keeping 1.24012.11 and 1.30096.1 alongside it.
+Dropping 1.20000.0 to stay at the four newest ebuilds; 1.24012.11,
+1.30096.1 and 1.37937.0 stay as fallbacks.
 ```
 
 Push to `main`; that's where this overlay's version bumps have always landed.

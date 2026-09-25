@@ -24,6 +24,7 @@ BASE_URI=https://downloads.claude.ai/claude-desktop/apt/stable
 POOL=$BASE_URI/pool/main/c/$MY_PN
 ARCHES="amd64 arm64"
 DEEP_ARCH=amd64          # arch whose .deb we unpack and inspect byte-level
+KEEP=4                   # ebuilds to retain, newest first (0 disables pruning)
 
 CHECK_ONLY=0
 KEEP_BUILD=0
@@ -31,11 +32,12 @@ TARGET=
 
 usage() {
 	cat <<EOF
-usage: bump.sh [--check-only] [--version VER] [--keep-build]
+usage: bump.sh [--check-only] [--version VER] [--keep-build] [--keep N]
 
   --check-only   report local vs upstream version only; no downloads, no writes
   --version VER  bump to VER instead of the newest upstream release
   --keep-build   leave /var/tmp/portage build tree in place for inspection
+  --keep N       retain N ebuilds instead of $KEEP; 0 prunes nothing
 EOF
 }
 
@@ -44,6 +46,7 @@ while (($#)); do
 		--check-only) CHECK_ONLY=1 ;;
 		--version) TARGET=${2:?--version needs an argument}; shift ;;
 		--keep-build) KEEP_BUILD=1 ;;
+		--keep) KEEP=${2:?--keep needs an argument}; shift ;;
 		-h|--help) usage; exit 0 ;;
 		*) echo "unknown argument: $1" >&2; usage >&2; exit 2 ;;
 	esac
@@ -405,6 +408,46 @@ else
 fi
 
 ((KEEP_BUILD)) || ( cd "$PKGDIR" && ebuild "$PN-$TARGET.ebuild" clean ) >/dev/null 2>&1
+
+# ----------------------------------------------------------------- pruning ---
+
+# The overlay keeps a few older ebuilds as fallbacks, not a full history: each
+# retained version pins ~330 MB of DIST entries in the Manifest. Pruning runs
+# only once the build has passed, so a FAIL leaves the tree untouched. Nothing
+# is committed here either way - a rejected bump is undone with
+#   git checkout HEAD -- app-misc/claude-desktop-bin
+# (HEAD because the prune is staged) plus an rm of the new, untracked ebuild.
+PRUNED=()
+if ((KEEP)); then
+	# An installed version keeps its ebuild: emerge needs it to unmerge or
+	# rebuild that version, and it is gone from upstream's pool by then.
+	installed=$(portageq match / "app-misc/$PN" 2>/dev/null | sed "s|^app-misc/$PN-||")
+	kept_installed=()
+	while read -r v; do
+		[[ -n $v ]] || continue
+		if grep -qxF "$v" <<<"$installed"; then kept_installed+=("$v")
+		else PRUNED+=("$v")
+		fi
+	done < <(local_versions | head -n -"$KEEP")
+
+	if ((${#PRUNED[@]})); then
+		for v in "${PRUNED[@]}"; do
+			git -C "$REPO" rm -q -- "$PKGDIR/$PN-$v.ebuild" 2>/dev/null \
+				|| rm -f "$PKGDIR/$PN-$v.ebuild"
+		done
+		# Regenerate so the dropped versions' DIST and EBUILD lines go with them.
+		if ! ( cd "$PKGDIR" && ebuild "$PN-$TARGET.ebuild" manifest ) >"$WORK/prune.log" 2>&1; then
+			hard "ebuild manifest failed after pruning"
+			detail "manifest log (tail)" "$(tail -15 "$WORK/prune.log")"
+			verdict FAIL
+		fi
+		row "pruned" "${PRUNED[*]} (keeping the $KEEP newest)"
+		note "dropped ${#PRUNED[@]} old ebuild(s) and their DIST entries: ${PRUNED[*]} - say so in the commit"
+	else
+		row "pruned" "nothing (at most $KEEP versions present)"
+	fi
+	((${#kept_installed[@]})) && note "kept ${kept_installed[*]} past the $KEEP newest: still installed"
+fi
 
 hdr "changed files"
 git -C "$REPO" status --short -- "app-misc/$PN" | sed 's/^/  /'
