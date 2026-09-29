@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		Everdo is a to-do list and task manager built around the Getting
+		Things Done (GTD) method: inbox, next actions, projects, areas,
+		contexts and weekly review, with optional end-to-end encrypted or
+		local-network sync. Repackaged from the upstream Debian binary
+		package; it bundles its own Electron runtime.
+	</longdescription>
+	<use>
+		<flag name="suid">
+			Install the bundled chrome-sandbox helper setuid root. Only needed
+			on kernels without CONFIG_USER_NS, or where unprivileged user
+			namespaces are blocked by a sysctl or an LSM. Otherwise leave this
+			off: the bundled Chromium uses its namespace sandbox, which needs
+			no elevated privileges at all.
+		</flag>
+	</use>
+</pkgmetadata>
