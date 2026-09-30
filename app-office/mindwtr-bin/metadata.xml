@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>q@cono.org.ua</email>
+		<name>cono</name>
+	</maintainer>
+	<longdescription lang="en">
+		Mindwtr ("Mind Like Water") is a to-do list and task manager built
+		around the Getting Things Done (GTD) method: inbox capture, next
+		actions, projects, contexts and weekly review. Works offline with no
+		account required. Repackaged from the upstream Debian binary package;
+		it is a Tauri app using the system WebKitGTK.
+	</longdescription>
+	<upstream>
+		<remote-id type="github">dongdongbh/mindwtr</remote-id>
+		<bugs-to>https://github.com/dongdongbh/mindwtr/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
