@@ -149,13 +149,17 @@ src_install() {
 		dodoc docs/man/*.rst
 	fi
 
-	# Create necessary directories
+	# Create necessary directories. meson's install script mkdirs
+	# configs/, but Portage prunes empty directories from the image, so
+	# keepdir it explicitly. Without it openvpn3-service-configmgr cannot
+	# open its --state-dir and persistent imports fail with
+	# "Service is inaccessible".
 	keepdir /etc/openvpn3
-	keepdir /var/lib/openvpn3
+	keepdir /var/lib/openvpn3/configs
 
-	# Set proper permissions
-	fowners openvpn:openvpn /var/lib/openvpn3
-	fperms 0750 /var/lib/openvpn3
+	# Match the ownership/mode that `openvpn3-admin init-config` enforces
+	fowners openvpn:openvpn /var/lib/openvpn3 /var/lib/openvpn3/configs
+	fperms 0750 /var/lib/openvpn3 /var/lib/openvpn3/configs
 }
 
 pkg_postinst() {
